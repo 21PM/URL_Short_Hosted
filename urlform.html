@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Shortener</title>
+</head>
+<body>
+<h1>URL Shortener</h1>
+<form id="urlForm" action="/shorten-url" method="post">
+    <label for="longUrl">Enter a long URL:</label>
+    <input type="url" id="longUrl" name="longUrl" required>
+    <button type="submit" class="submitbtn">Shorten URL</button>
+</form>
+<br>
+<span>Copy the below short Url</span><br><br>
+<span class="result"></span>
+
+<script>
+        var sbtBtn = document.querySelector(".submitbtn");
+        var results = document.querySelector(".result");
+        var longurl = document.querySelector("#longUrl")
+        let newUrl
+       sbtBtn.addEventListener("click",async (e)=>{
+            newUrl = longurl.value;
+            e.preventDefault();
+            const response = await fetch("http://localhost:10000/shorten-url", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ longUrl: newUrl })
+        });
+
+        const respond = await response.json();
+        console.log(respond);
+       
+        results.innerText = respond.data;
+        
+       
+        return respond; // Return the data for further use
+    
+        })
+        // console.log(ans);
+
+</script>
+
+</body>
+</html>
